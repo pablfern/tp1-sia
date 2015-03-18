@@ -21,12 +21,12 @@ public class Block {
 	public Block moveBlock(int moves) {
 		if(horizontal) {
 			Square newHead = new Square(head.getI(), head.getJ() + moves);
-			Square newTail = new Square(head.getI(), head.getJ() + moves);
+			Square newTail = new Square(tail.getI(), tail.getJ() + moves);
 			Block newBlock = new Block(getId(), newHead, newTail, true, getSize());
 			return newBlock;
 		} else {
 			Square newHead = new Square(head.getI() + moves, head.getJ());
-			Square newTail = new Square(head.getI() + moves, head.getJ());
+			Square newTail = new Square(tail.getI() + moves, tail.getJ());
 			Block newBlock = new Block(getId(), newHead, newTail, false, getSize());
 			return newBlock;
 		}
