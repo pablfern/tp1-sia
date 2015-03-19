@@ -28,6 +28,7 @@ public class GridLock {
 		blocks.add(b1);
 		blocks.add(b2);
 		Square finalSquare = new Square(3, 5);
+        Utils.printBoard(board);
 		GPSProblem problem = new GridLockProblem(board, blocks, finalSquare);
 		GPSEngine engine = new GridLockEngine();
 		engine.engine(problem, SearchStrategy.BFS);

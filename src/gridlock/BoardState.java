@@ -6,6 +6,8 @@ import gps.api.GPSState;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Utils;
+
 public class BoardState implements GPSState {
 
 	private int[][] board;
@@ -156,8 +158,9 @@ public class BoardState implements GPSState {
 	public void updateBoard(int[][] board, Block block, int id) {
 		if (block.isHorizontal()) {
 			for (int j = 0; j < block.getSize(); j++) {
-				System.out.println("Position: (" + block.getTail().getI() + ","
-						+ (block.getTail().getJ() + j) + ")");
+//				System.out.println("Position: (" + block.getTail().getI() + ","
+//						+ (block.getTail().getJ() + j) + ")");
+				Utils.printPosition(block,j);
 				board[block.getTail().getI()][block.getTail().getJ() + j] = id;
 			}
 		} else {

@@ -18,21 +18,35 @@ public class Block {
 		this.size = size;
 	}
 
-	public Block moveBlock(int moves) {
-		if (horizontal) {
-			Square newHead = new Square(head.getI(), head.getJ() + moves);
-			Square newTail = new Square(tail.getI(), tail.getJ() + moves);
-			Block newBlock = new Block(getId(), newHead, newTail, true,
-					getSize());
-			return newBlock;
-		} else {
-			Square newHead = new Square(head.getI() + moves, head.getJ());
-			Square newTail = new Square(tail.getI() + moves, tail.getJ());
-			Block newBlock = new Block(getId(), newHead, newTail, false,
-					getSize());
-			return newBlock;
-		}
+//	public Block moveBlock(int moves) {
+//		if (horizontal) {
+//			Square newHead = new Square(head.getI(), head.getJ() + moves);
+//			Square newTail = new Square(tail.getI(), tail.getJ() + moves);
+//			Block newBlock = new Block(getId(), newHead, newTail, true,
+//					getSize());
+//			return newBlock;
+//		} else {
+//			Square newHead = new Square(head.getI() + moves, head.getJ());
+//			Square newTail = new Square(tail.getI() + moves, tail.getJ());
+//			Block newBlock = new Block(getId(), newHead, newTail, false,
+//					getSize());
+//			return newBlock;
+//		}
+//	}
+	
+	
+	public Block moveBlock(int moves){
+		Square newHead = getNewSquare(head, moves);
+		Square newTail = getNewSquare(tail, moves);
+		return new Block(getId(), newHead, newTail, horizontal, getSize());
 	}
+
+	private Square getNewSquare(Square aux, int moves) {
+		return (horizontal == true) ?
+				new Square(aux.getI(), aux.getJ() + moves) :
+					new Square(aux.getI() + moves, aux.getJ());
+	}
+
 
 	public Square getHead() {
 		return head;
