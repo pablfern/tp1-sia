@@ -114,4 +114,8 @@ public abstract class GPSEngine {
 
 	public abstract void addNode(GPSNode node);
 
+	public List<GPSNode> getClosedNodes() {
+		return this.closed;
+	}
+
 }

@@ -12,22 +12,25 @@ public class Block {
 
 	public Block(int id, Square head, Square tail, boolean horizontal, int size) {
 		super();
+		this.id = id;
 		this.head = head;
 		this.tail = tail;
 		this.horizontal = horizontal;
 		this.size = size;
 	}
-	
+
 	public Block moveBlock(int moves) {
-		if(horizontal) {
+		if (horizontal) {
 			Square newHead = new Square(head.getI(), head.getJ() + moves);
 			Square newTail = new Square(tail.getI(), tail.getJ() + moves);
-			Block newBlock = new Block(getId(), newHead, newTail, true, getSize());
+			Block newBlock = new Block(getId(), newHead, newTail, true,
+					getSize());
 			return newBlock;
 		} else {
 			Square newHead = new Square(head.getI() + moves, head.getJ());
 			Square newTail = new Square(tail.getI() + moves, tail.getJ());
-			Block newBlock = new Block(getId(), newHead, newTail, false, getSize());
+			Block newBlock = new Block(getId(), newHead, newTail, false,
+					getSize());
 			return newBlock;
 		}
 	}
@@ -67,6 +70,13 @@ public class Block {
 
 	public int getSize() {
 		return size;
+	}
+
+	@Override
+	public String toString() {
+		return "Block [id=" + id + ", head=" + head + ", tail=" + tail
+				+ ", horizontal=" + horizontal + ", id=" + ", size=" + size
+				+ "]";
 	}
 
 }

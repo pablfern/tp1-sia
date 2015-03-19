@@ -18,4 +18,9 @@ public class Square {
 		return j;
 	}
 
+	@Override
+	public String toString() {
+		return "Square [i=" + i + ", j=" + j + "]";
+	}
+
 }

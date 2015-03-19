@@ -18,6 +18,8 @@ public class GridLock {
 		System.out.println("Loading...");
 		long start = System.currentTimeMillis();
 		int[][] board = new int[6][6];
+		board[3][1]=1;
+		board[3][0]=1;
 		List<Block> blocks = new ArrayList<Block>();
 		Block b1 = new Block(1, new Square(3,1), new Square(3,0), true, 2);
 		blocks.add(b1);
