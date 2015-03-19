@@ -62,7 +62,7 @@ public class BoardState implements GPSState {
 		printBoard(this.board);
 		/* Create new pieces for new boardState */
 		List<Block> newBlocks = new ArrayList<Block>();
-		int[][] newBoard = board.clone();
+		int[][] newBoard = cloneBoard();
 
 		for (int k = 0; k < blocks.size(); k++) {
 			Block b = blocks.get(k);
@@ -119,6 +119,16 @@ public class BoardState implements GPSState {
 			}
 			System.out.println();
 		}
+	}
+	
+	private int[][] cloneBoard(){
+		int[][] clonedBoard = new int[board.length][board[0].length];
+		for(int i=0; i< clonedBoard.length;i++){
+			for(int j=0;j<clonedBoard[0].length;j++){
+				clonedBoard[i][j] = board[i][j];
+			}
+		}
+		return clonedBoard;
 	}
 
 }
