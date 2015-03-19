@@ -1,6 +1,5 @@
 package gridlock;
 
-import exception.NotAppliableException;
 
 public class Block {
 
@@ -53,11 +52,7 @@ public class Block {
 	}
 
 	public Block copyBlock() {
-		try {
-			return (Block) this.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;
-		}
+		return cloneBlock();
 	}
 
 	public boolean isHorizontal() {
@@ -77,6 +72,10 @@ public class Block {
 		return "Block [id=" + id + ", head=" + head + ", tail=" + tail
 				+ ", horizontal=" + horizontal + ", id=" + ", size=" + size
 				+ "]";
+	}
+	
+	public Block cloneBlock(){
+		return new Block(id, new Square(head.getI(), head.getJ()), new Square(tail.getI(), tail.getJ()), horizontal, size);
 	}
 
 }
