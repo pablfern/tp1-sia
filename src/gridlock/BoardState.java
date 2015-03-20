@@ -50,9 +50,6 @@ public class BoardState implements GPSState {
 //					System.out.println("Board value: "
 //							+ board[square.getI()][square.getJ() + k]);
 					if (board[square.getI()][square.getJ() + k] != 0) {
-//						System.out.println("i:" + square.getI() + " j:"
-//								+ square.getJ() + " k:" + k);
-						//printBoard(board);
 						throw new NotAppliableException();
 					}
 				}
@@ -66,8 +63,8 @@ public class BoardState implements GPSState {
 		} catch (IndexOutOfBoundsException e) {
 			throw new NotAppliableException();
 		}
-//		System.out.println("Before");
-//		printBoard(this.board);
+		System.out.println("Before");
+		Utils.printBoard(this.board);
 		/* Create new pieces for new boardState */
 		List<Block> newBlocks = new ArrayList<Block>();
 		int[][] newBoard = cloneBoard();
@@ -88,8 +85,8 @@ public class BoardState implements GPSState {
 				updateBoard(newBoard, movedBlock, b.getId());
 			}
 		}
-//		System.out.println("After");
-//		printBoard(newBoard);
+		System.out.println("After");
+		Utils.printBoard(newBoard);
 		return new BoardState(newBoard, newBlocks);
 	}
 
@@ -103,16 +100,14 @@ public class BoardState implements GPSState {
 				for (int k = 1; k <= moves; k++) {
 //					System.out.println("Board value: "
 //							+ board[square.getI() + k][square.getJ()]);
-					if (board[square.getI() + k][square.getJ()] != 0) {
-//						System.out.println("i:" + square.getI() + " j:"
-//								+ square.getJ() + " k:" + k);
-						//printBoard(board);
+					
+					if (board[square.getI() - k][square.getJ()] != 0) {
 						throw new NotAppliableException();
 					}
 				}
 			} else {
 				for (int k = -1; k >= moves; k--) {
-					if (board[square.getI() + k][square.getJ()] != 0) {
+					if (board[square.getI() - k][square.getJ()] != 0) {
 						throw new NotAppliableException();
 					}
 				}
@@ -120,8 +115,8 @@ public class BoardState implements GPSState {
 		} catch (IndexOutOfBoundsException e) {
 			throw new NotAppliableException();
 		}
-//		System.out.println("Before");
-//		printBoard(this.board);
+		System.out.println("Before");
+		Utils.printBoard(this.board);
 		/* Create new pieces for new boardState */
 		List<Block> newBlocks = new ArrayList<Block>();
 		int[][] newBoard = cloneBoard();
@@ -142,8 +137,8 @@ public class BoardState implements GPSState {
 				updateBoard(newBoard, movedBlock, b.getId());
 			}
 		}
-//		System.out.println("After");
-//		printBoard(newBoard);
+		System.out.println("After");
+		Utils.printBoard(newBoard);
 		return new BoardState(newBoard, newBlocks);
 	}
 
@@ -158,26 +153,15 @@ public class BoardState implements GPSState {
 	public void updateBoard(int[][] board, Block block, int id) {
 		if (block.isHorizontal()) {
 			for (int j = 0; j < block.getSize(); j++) {
-//				System.out.println("Position: (" + block.getTail().getI() + ","
-//						+ (block.getTail().getJ() + j) + ")");
-				Utils.printPosition(block,j);
+				//Utils.printPosition(block,j);
 				board[block.getTail().getI()][block.getTail().getJ() + j] = id;
 			}
 		} else {
 			for (int i = 0; i < block.getSize(); i++) {
-				board[block.getTail().getI() + i][block.getTail().getJ()] = id;
+				board[block.getTail().getI() - i][block.getTail().getJ()] = id;
 			}
 		}
 	}
-
-//	public void printBoard(int[][] myBoard) {
-//		for (int i = 0; i < myBoard[0].length; i++) {
-//			for (int j = 0; j < myBoard.length; j++) {
-//				System.out.print(myBoard[i][j]);
-//			}
-//			System.out.println();
-//		}
-//	}
 
 	private int[][] cloneBoard() {
 		int[][] clonedBoard = new int[board.length][board[0].length];

@@ -44,7 +44,7 @@ public class Block {
 	private Square getNewSquare(Square aux, int moves) {
 		return (horizontal == true) ?
 				new Square(aux.getI(), aux.getJ() + moves) :
-					new Square(aux.getI() + moves, aux.getJ());
+					new Square(aux.getI() - moves, aux.getJ());
 	}
 
 
