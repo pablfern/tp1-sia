@@ -69,7 +69,7 @@ public abstract class GPSEngine {
 		}
 
 		for (GPSRule rule : problem.getRules()) {
-			System.out.println(rule.getName());
+			//System.out.println(rule.getName());
 			GPSState newState = null;
 			try {
 				newState = rule.evalRule(node.getState());

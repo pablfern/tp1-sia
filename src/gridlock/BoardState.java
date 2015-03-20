@@ -63,8 +63,8 @@ public class BoardState implements GPSState {
 		} catch (IndexOutOfBoundsException e) {
 			throw new NotAppliableException();
 		}
-		System.out.println("Before");
-		Utils.printBoard(this.board);
+//		System.out.println("Before");
+//		Utils.printBoard(this.board);
 		/* Create new pieces for new boardState */
 		List<Block> newBlocks = new ArrayList<Block>();
 		int[][] newBoard = cloneBoard();
@@ -85,8 +85,8 @@ public class BoardState implements GPSState {
 				updateBoard(newBoard, movedBlock, b.getId());
 			}
 		}
-		System.out.println("After");
-		Utils.printBoard(newBoard);
+//		System.out.println("After");
+//		Utils.printBoard(newBoard);
 		return new BoardState(newBoard, newBlocks);
 	}
 
@@ -115,8 +115,8 @@ public class BoardState implements GPSState {
 		} catch (IndexOutOfBoundsException e) {
 			throw new NotAppliableException();
 		}
-		System.out.println("Before");
-		Utils.printBoard(this.board);
+//		System.out.println("Before");
+//		Utils.printBoard(this.board);
 		/* Create new pieces for new boardState */
 		List<Block> newBlocks = new ArrayList<Block>();
 		int[][] newBoard = cloneBoard();
@@ -137,8 +137,8 @@ public class BoardState implements GPSState {
 				updateBoard(newBoard, movedBlock, b.getId());
 			}
 		}
-		System.out.println("After");
-		Utils.printBoard(newBoard);
+//		System.out.println("After");
+//		Utils.printBoard(newBoard);
 		return new BoardState(newBoard, newBlocks);
 	}
 

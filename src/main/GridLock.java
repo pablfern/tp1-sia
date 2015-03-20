@@ -48,7 +48,7 @@ public class GridLock {
 
 		GPSProblem problem = new GridLockProblem(board, blocks, finalSquare);
 		GPSEngine engine = new GridLockEngine();
-		engine.engine(problem, SearchStrategy.DFS);
+		engine.engine(problem, SearchStrategy.BFS);
 
 	}
 }
