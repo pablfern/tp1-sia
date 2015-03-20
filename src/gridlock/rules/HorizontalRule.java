@@ -23,7 +23,7 @@ public class HorizontalRule implements GPSRule {
 
 	@Override
 	public String getName() {
-		return "Move horizontally block" + blockID + " " + moves + " spaces.";
+		return "Move horizontally block " + blockID + " " + moves + " spaces.";
 	}
 
 	@Override

@@ -23,7 +23,7 @@ public class VerticalRule implements GPSRule {
 
 	@Override
 	public String getName() {
-		return "Move vertically block" + blockID + " " + moves + " spaces.";
+		return "Move vertically block " + blockID + " " + moves + " spaces.";
 	}
 
 	@Override

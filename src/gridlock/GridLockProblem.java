@@ -46,6 +46,7 @@ public class GridLockProblem implements GPSProblem {
 	public List<GPSRule> getRules() {
 		List<GPSRule> rules = new ArrayList<GPSRule>();
 		for (Block b : blocks) {
+			System.out.println("block: " + b.getId());
 			for (int i = 1; i <= board[0].length - b.getSize(); i++) {
 				if (b.isHorizontal()) {
 					rules.add(new HorizontalRule(b.getId(), i));
