@@ -45,11 +45,11 @@ public class BoardState implements GPSState {
 		try {
 			if (moves > 0) {
 				for (int k = 1; k <= moves; k++) {
-					System.out.println("Board value: "
-							+ board[square.getI()][square.getJ() + k]);
+//					System.out.println("Board value: "
+//							+ board[square.getI()][square.getJ() + k]);
 					if (board[square.getI()][square.getJ() + k] != 0) {
-						System.out.println("i:" + square.getI() + " j:"
-								+ square.getJ() + " k:" + k);
+//						System.out.println("i:" + square.getI() + " j:"
+//								+ square.getJ() + " k:" + k);
 						printBoard(board);
 						throw new NotAppliableException();
 					}
