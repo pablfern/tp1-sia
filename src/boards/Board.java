@@ -29,4 +29,7 @@ public class Board {
 		return finalSquare;
 	}
 
+	public String toString() {
+		return "Board with " + blocks.size() + " blocks.";
+	}
 }

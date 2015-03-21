@@ -20,7 +20,7 @@ public abstract class GPSEngine {
 	// Use this variable in the addNode implementation
 	protected SearchStrategy strategy;
 
-	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) {
+	public boolean engine(GPSProblem myProblem, SearchStrategy myStrategy) {
 
 		problem = myProblem;
 		strategy = myStrategy;
@@ -51,9 +51,13 @@ public abstract class GPSEngine {
 
 		if (finished) {
 			System.out.println("OK! solution found!");
+			return true;
 		} else if (failed) {
 			System.err.println("FAILED! solution not found!");
+			return false;
 		}
+		/* The code SHOULD NEVER reach this point */
+		return false;
 	}
 
 	private boolean isGoal(GPSNode currentNode) {
@@ -69,7 +73,7 @@ public abstract class GPSEngine {
 		}
 
 		for (GPSRule rule : problem.getRules()) {
-			//System.out.println(rule.getName());
+//			 System.out.println(rule.getName());
 			GPSState newState = null;
 			try {
 				newState = rule.evalRule(node.getState());

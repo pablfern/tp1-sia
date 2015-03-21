@@ -25,6 +25,11 @@ public class HorizontalRule implements GPSRule {
 	public String getName() {
 		return "Move horizontally block " + blockID + " " + moves + " spaces.";
 	}
+	
+	@Override
+	public String toString() {
+		return "Move horizontally block " + blockID + " " + moves + " spaces.";
+	}
 
 	@Override
 	public GPSState evalRule(GPSState state) throws NotAppliableException {

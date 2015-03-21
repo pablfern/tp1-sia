@@ -27,6 +27,11 @@ public class VerticalRule implements GPSRule {
 	}
 
 	@Override
+	public String toString() {
+		return "Move vertically block " + blockID + " " + moves + " spaces.";
+	}
+
+	@Override
 	public GPSState evalRule(GPSState state) throws NotAppliableException {
 		return ((BoardState) state).move_block_vertically(blockID, moves);
 	}
