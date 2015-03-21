@@ -22,4 +22,20 @@ public class Utils {
 			System.out.println(line);
 		}
 	}
+
+	public static String boardToString(int[][] board) {
+		String ans = "";
+		
+		int x = board.length;
+		int y = board[0].length;
+		
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+				ans = ans.concat(board[i][j] + " | ");
+			}
+			ans = ans.concat("\n");
+		}
+		ans = ans.concat("\n");
+		return ans;
+	}
 }

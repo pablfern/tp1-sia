@@ -4,6 +4,7 @@ import exception.NotAppliableException;
 import gps.api.GPSState;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import main.Utils;
@@ -171,6 +172,11 @@ public class BoardState implements GPSState {
 			}
 		}
 		return clonedBoard;
+	}
+
+	@Override
+	public String toString() {
+		return "BoardState:\n".concat(Utils.boardToString(board));
 	}
 
 }
