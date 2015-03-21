@@ -1,5 +1,6 @@
 package gridlock;
 
+import gps.Heuristic;
 import gps.api.GPSProblem;
 import gps.api.GPSRule;
 import gps.api.GPSState;
@@ -7,21 +8,31 @@ import gridlock.rules.HorizontalRule;
 import gridlock.rules.VerticalRule;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GridLockProblem implements GPSProblem {
 
 	private Square finalSquare;
-
 	/* We use a square board */
 	private int[][] board;
 	private List<Block> blocks;
-
+	private Heuristic heuristic;
 
 	public GridLockProblem(int[][] board, List<Block> blocks, Square finalSquare) {
 		this.board = board;
 		this.blocks = blocks;
 		this.finalSquare = finalSquare;
+		this.heuristic = null;
+	}
+
+	public GridLockProblem(int[][] board, List<Block> blocks,
+			Square finalSquare, Heuristic heuristic) {
+		this.board = board;
+		this.blocks = blocks;
+		this.finalSquare = finalSquare;
+		this.heuristic = heuristic;
 	}
 
 	@Override
@@ -61,8 +72,59 @@ public class GridLockProblem implements GPSProblem {
 
 	@Override
 	public Integer getHValue(GPSState state) {
-		// TODO We should add this to the constructor
-		return 0;
+		
+		if (heuristic == null) {
+			return 0;
+		}
+		switch (heuristic) {
+		case DISTANCE_TO_GOAL:
+			return distanceToGoalHeuristic((BoardState) state);
+		case BLOCKS_IN_THE_MIDDEL:
+			return blocksInTheMiddelHeuristic((BoardState) state);
+		default:
+			return 0;
+		}
+	}
+
+	/*
+	 * This heuristic uses the distance of the head of the block to the final
+	 * square. Keep in mind that the final square MUST be on the right side or
+	 * at the bottom of the board. This way we always use the distance of the
+	 * head of the block to the goal. THIS HEURISTIC DOES NOT CONTEMPLATE THE
+	 * CASE WHERE THE GOAL AND THE MAIN BLOCK ARE PLACED INCORRECTYL.
+	 */
+	private Integer distanceToGoalHeuristic(BoardState state) {
+		Block block = state.getBlocks().get(0);
+		if (block.isHorizontal()) {
+			return finalSquare.getJ() - block.getHead().getJ();
+		} else {
+			return finalSquare.getI() - block.getHead().getI();
+		}
+	}
+
+	/*
+	 * This heuristic uses the amount of blocks between the goal and the main
+	 * block. THIS HEURISTIC DOES NOT CONTEMPLATE THE CASE WHERE THE GOAL AND
+	 * THE MAIN BLOCK ARE PLACED INCORRECTYL.
+	 */
+	private Integer blocksInTheMiddelHeuristic(BoardState state) {
+		Block block = state.getBlocks().get(0);
+		Set<Integer> blocks = new HashSet<Integer>();
+		if (block.isHorizontal()) {
+			for (int j = block.getHead().getJ() + 1; j < board[0].length; j++) {
+				if (board[block.getHead().getI()][j] != 0) {
+					blocks.add(board[block.getHead().getI()][j]);
+				}
+			}
+			return blocks.size();
+		} else {
+			for (int i = block.getHead().getI() + 1; i < board.length; i++) {
+				if (board[i][block.getHead().getJ()] != 0) {
+					blocks.add(board[i][block.getHead().getJ()]);
+				}
+			}
+			return blocks.size();
+		}
 	}
 
 }
