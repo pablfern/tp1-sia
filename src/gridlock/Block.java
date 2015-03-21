@@ -19,10 +19,10 @@ public class Block {
 		this.size = size;
 
 		if (horizontal) {
-			if (head.getJ() <= tail.getJ())
+			if (head.getJ() <= tail.getJ() || head.getI() != tail.getI())
 				throw new InvalidBlockException();
 		} else {
-			if (head.getI() <= tail.getI())
+			if (head.getI() <= tail.getI() || head.getJ() != tail.getJ())
 				throw new InvalidBlockException();
 		}
 	}
