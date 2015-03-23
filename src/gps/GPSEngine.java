@@ -43,7 +43,7 @@ public abstract class GPSEngine {
 		long explosionCounter = 0;
 
 		open.add(rootNode);
-		if (strategy != SearchStrategy.IDDFS) {
+		if (strategy != SearchStrategy.IDDFS && !SearchStrategy.isHeuristic(strategy)) {
 			while (!failed && !finished) {
 				if (open.size() <= 0) {
 					failed = true;
@@ -61,7 +61,7 @@ public abstract class GPSEngine {
 					}
 				}
 			}
-		} else {
+		} else if(!SearchStrategy.isHeuristic(strategy)) {
 			// While for each iteration in IDDFS
 			while (!finished && iddfsDepth >= iddfsIteration) {
 				// TODO Open should always be empty at this point. Just in case
@@ -90,6 +90,25 @@ public abstract class GPSEngine {
 			}
 			if (!finished) {
 				failed = true;
+			}
+		} else{
+			//Estrategia con heuristica
+			while (!failed && !finished) {
+				if (open.size() <= 0) {
+					failed = true;
+				} else {
+					GPSNode currentNode = open.get(0);
+					closed.add(currentNode);
+					open.remove(0);
+					if (isGoal(currentNode)) {
+						finished = true;
+						answerDepth = currentNode.getDepth();
+						System.out.println(currentNode.getSolution());
+					} else {
+						explosionCounter++;
+						explodeHeuristic(currentNode);
+					}
+				}
 			}
 		}
 
@@ -179,5 +198,37 @@ public abstract class GPSEngine {
 	public int getIddfsIteration() {
 		return iddfsIteration;
 	}
+	
+	private boolean explodeHeuristic(GPSNode node) {
+		if (problem.getRules() == null) {
+			System.err.println("No rules!");
+			return false;
+		}
+		List<GPSNode> heuristic = new ArrayList<GPSNode>();;
 
+		for (GPSRule rule : problem.getRules()) {
+			// System.out.println(rule.getName());
+			GPSState newState = null;
+			try {
+				newState = rule.evalRule(node.getState());
+			} catch (NotAppliableException e) {
+				// Do nothing
+			}
+			if (newState != null
+					&& !checkBranch(node, newState)
+					&& !checkOpenAndClosed(node.getCost() + rule.getCost(),
+							newState)) {
+				GPSNode newNode = new GPSNode(newState, node.getCost()
+						+ rule.getCost(), node.getDepth() + 1);
+				newNode.setParent(node);
+				heuristic = strategy.addNode(heuristic, newNode, problem);
+			}
+		}
+		if(!heuristic.isEmpty()){
+			for(GPSNode hNode: heuristic){
+				addNode(hNode);
+			}
+		}
+		return true;
+	}
 }

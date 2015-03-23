@@ -31,6 +31,9 @@ public class GridLockEngine extends GPSEngine {
 		case IDDFS:
 			open.add(0,node);
 			break;
+		case GREEDY: case AStar:
+			open.add(0,node);
+			break;
 		default:
 			throw new RuntimeErrorException(null);
 		}
@@ -44,4 +47,5 @@ public class GridLockEngine extends GPSEngine {
 		}
 		return false;
 	}
+
 }
