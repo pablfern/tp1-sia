@@ -48,9 +48,7 @@ public abstract class GPSEngine {
 				if (open.size() <= 0) {
 					failed = true;
 				} else {
-					GPSNode currentNode = open.get(0);
-					closed.add(currentNode);
-					open.remove(0);
+					GPSNode currentNode = getCurrentNode();
 					if (isGoal(currentNode)) {
 						finished = true;
 						answerDepth = currentNode.getDepth();
@@ -70,9 +68,7 @@ public abstract class GPSEngine {
 				closed = new ArrayList<GPSNode>();
 				open.add(rootNode);
 				while (open.size() > 0 && !finished) {
-					GPSNode currentNode = open.get(0);
-					closed.add(currentNode);
-					open.remove(0);
+					GPSNode currentNode = getCurrentNode();
 					if (isGoal(currentNode)) {
 						finished = true;
 						answerDepth = currentNode.getDepth();
@@ -97,9 +93,7 @@ public abstract class GPSEngine {
 				if (open.size() <= 0) {
 					failed = true;
 				} else {
-					GPSNode currentNode = open.get(0);
-					closed.add(currentNode);
-					open.remove(0);
+					GPSNode currentNode = getCurrentNode();
 					if (isGoal(currentNode)) {
 						finished = true;
 						answerDepth = currentNode.getDepth();
@@ -127,6 +121,13 @@ public abstract class GPSEngine {
 		System.out.println("Cantidad de estados generados: " + nodeCount);
 		System.out.println("Número de nodos frontera: ??");
 		System.out.println("Número de nodos expandidos: " + explosionCounter);
+	}
+
+	private GPSNode getCurrentNode() {
+		GPSNode currentNode = open.get(0);
+		closed.add(currentNode);
+		open.remove(0);
+		return currentNode;
 	}
 
 	private boolean isGoal(GPSNode currentNode) {

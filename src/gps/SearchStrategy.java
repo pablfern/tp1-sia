@@ -24,29 +24,52 @@ public enum SearchStrategy {
 	public List<GPSNode> addNode(List<GPSNode> heuristic, GPSNode newNode, GPSProblem problem) {
 		List<GPSNode> aux = new ArrayList<GPSNode>();
 		boolean add=false;
-		if(this.equals(GREEDY)){
-			if(!heuristic.isEmpty()){
-				for(GPSNode hnode: heuristic){
-					if(hasWorstHeurisitc(newNode, problem, hnode) && !add){
-						aux.add(newNode);
-						add = true;
-					}
-					aux.add(hnode);
-				}
-				if(!add){
+		if(!heuristic.isEmpty()){
+			for(GPSNode hnode: heuristic){
+				if(hasWorstHeuristic(newNode, problem, hnode) && !add){
 					aux.add(newNode);
+					add = true;
 				}
-			} else{
+				aux.add(hnode);
+			}
+			if(!add){
 				aux.add(newNode);
 			}
+		} else{
+			aux.add(newNode);
 		}
+		
 		return aux;
 	}
 
-	private boolean hasWorstHeurisitc(GPSNode newNode, GPSProblem problem,
+	private boolean hasWorstHeuristic(GPSNode newNode, GPSProblem problem,
 			GPSNode hnode) {
-		Integer newNodevalueH = problem.getHValue(newNode.getState());
-		Integer hnodevalueH =  problem.getHValue(hnode.getState());
-		return problem.getHValue(newNode.getState()) > problem.getHValue(hnode.getState());
+		Integer newNodevalueH = null;
+		Integer hnodevalueH = null;
+		if(this.equals(GREEDY)){
+			newNodevalueH = getHeuristic(problem, newNode);
+			hnodevalueH =  getHeuristic(problem, hnode);
+		}else if(this.equals(AStar)){
+			newNodevalueH = getCostAstar(newNode, problem);
+			hnodevalueH = getCostAstar(hnode, problem);
+			//TODO no estoy teniendo en cuenta que si son iguales
+			// en ese caso no se si hay que tener en cta el de menor cost o 
+			// el de menor h
+		}
+		return hasWorstHeuristic(newNodevalueH, hnodevalueH);
 	}
+
+	private boolean hasWorstHeuristic(Integer newNodevalueH, Integer hnodevalueH) {
+		return newNodevalueH > hnodevalueH;
+	}
+
+	private Integer getHeuristic(GPSProblem problem, GPSNode hnode) {
+		return problem.getHValue(hnode.getState());
+	}
+	
+	private Integer getCostAstar(GPSNode node, GPSProblem problem){
+		return node.getCost() + getHeuristic(problem, node);
+	}
+	
+
 }
