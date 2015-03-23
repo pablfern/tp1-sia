@@ -11,7 +11,7 @@ import boards.BoardGenerator;
 public class GridLock {
 
 	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
+		
 		Board board = BoardGenerator.getElevenBlockBoard();
 		System.out.println("Initial board");
 		Utils.printBoard(board.getBoard());
@@ -19,8 +19,9 @@ public class GridLock {
 
 		GPSProblem problem = new GridLockProblem(board.getBoard(),
 				board.getBlocks(), board.getFinalSquare());
-		GPSEngine engine = new GridLockEngine(20);
+		GPSEngine engine = new GridLockEngine(13);
 		engine.engine(problem, SearchStrategy.IDDFS);
+		long start = System.currentTimeMillis();
 		long end = System.currentTimeMillis();
 		System.out.println("Fin. Tiempo estimado: " + (end - start)
 				+ " milisegundos");

@@ -31,8 +31,9 @@ public abstract class GPSEngine {
 		this.iddfsDepth = iddfsDepth;
 	}
 
-	public boolean engine(GPSProblem myProblem, SearchStrategy myStrategy) {
-
+	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) {
+		long start = System.currentTimeMillis();
+		int answerDepth = -1;
 		problem = myProblem;
 		strategy = myStrategy;
 
@@ -52,9 +53,8 @@ public abstract class GPSEngine {
 					open.remove(0);
 					if (isGoal(currentNode)) {
 						finished = true;
+						answerDepth = currentNode.getDepth();
 						System.out.println(currentNode.getSolution());
-						System.out.println("Expanded nodes: "
-								+ explosionCounter);
 					} else {
 						explosionCounter++;
 						explode(currentNode);
@@ -75,9 +75,8 @@ public abstract class GPSEngine {
 					open.remove(0);
 					if (isGoal(currentNode)) {
 						finished = true;
+						answerDepth = currentNode.getDepth();
 						System.out.println(currentNode.getSolution());
-						System.out.println("Expanded nodes: "
-								+ explosionCounter);
 					} else {
 						// Only expand depending on the depth of the current
 						// node
@@ -96,13 +95,19 @@ public abstract class GPSEngine {
 
 		if (finished) {
 			System.out.println("OK! solution found!");
-			return true;
 		} else if (failed) {
 			System.err.println("FAILED! solution not found!");
-			return false;
 		}
-		/* The code SHOULD NEVER reach this point */
-		return false;
+		long end = System.currentTimeMillis();
+		System.out.println("Tiempo de procesamiento: " + (end - start)
+				+ " milisegundos");
+		if (answerDepth != -1) {
+			System.out.println("Profundiad de la solución: " + answerDepth);
+		}
+		int nodeCount = open.size() + closed.size();
+		System.out.println("Cantidad de estados generados: " + nodeCount);
+		System.out.println("Número de nodos frontera: ??");
+		System.out.println("Número de nodos expandidos: " + explosionCounter);
 	}
 
 	private boolean isGoal(GPSNode currentNode) {
