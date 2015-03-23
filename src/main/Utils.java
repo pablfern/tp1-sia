@@ -21,6 +21,7 @@ public class Utils {
 			}
 			System.out.println(line);
 		}
+		System.out.println();
 	}
 
 	public static String boardToString(int[][] board) {

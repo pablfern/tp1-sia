@@ -93,13 +93,9 @@ public class BoardState implements GPSState {
 	public GPSState move_block_vertically(int blockID, int moves)
 			throws NotAppliableException {
 		/* First check for empty spaces and index out of bounds */
-		Square square = null;
-		try {
-			square = moves > 0 ? blocks.get(blockID - 1).getHead() : blocks
-					.get(blockID - 1).getTail();
-		} catch (Exception e) {
-			System.out.println("EERRRE");
-		}
+		Square square = moves > 0 ? blocks.get(blockID - 1).getHead() : blocks
+				.get(blockID - 1).getTail();
+
 		try {
 			if (moves > 0) {
 				for (int k = 1; k <= moves; k++) {

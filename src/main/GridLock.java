@@ -12,7 +12,7 @@ public class GridLock {
 
 	public static void main(String[] args) {
 		
-		Board board = BoardGenerator.getElevenBlockBoard();
+		Board board = BoardGenerator.getSevenBlockBoard();
 		System.out.println("Initial board");
 		Utils.printBoard(board.getBoard());
 		System.out.println();
@@ -20,10 +20,6 @@ public class GridLock {
 		GPSProblem problem = new GridLockProblem(board.getBoard(),
 				board.getBlocks(), board.getFinalSquare());
 		GPSEngine engine = new GridLockEngine(13);
-		engine.engine(problem, SearchStrategy.IDDFS);
-		long start = System.currentTimeMillis();
-		long end = System.currentTimeMillis();
-		System.out.println("Fin. Tiempo estimado: " + (end - start)
-				+ " milisegundos");
+		engine.engine(problem, SearchStrategy.BFS);
 	}
 }

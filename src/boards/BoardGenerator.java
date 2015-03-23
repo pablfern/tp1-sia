@@ -89,7 +89,7 @@ public class BoardGenerator {
 		List<Block> blocks = new ArrayList<Block>();
 
 		Block b1 = new Block(1, new Square(2, 2), new Square(2, 1), true, 2);
-		Block b2 = new Block(2, new Square(4, 2), new Square(2, 2), false, 2);
+		Block b2 = new Block(2, new Square(4, 2), new Square(3, 2), false, 2);
 		Block b3 = new Block(3, new Square(2, 0), new Square(0, 0), false, 3);
 		Block b4 = new Block(4, new Square(2, 3), new Square(0, 3), false, 3);
 		Block b5 = new Block(5, new Square(3, 5), new Square(3, 3), true, 3);
