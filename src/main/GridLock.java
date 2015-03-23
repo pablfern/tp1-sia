@@ -19,10 +19,10 @@ public class GridLock {
 
 		GPSProblem problem = new GridLockProblem(board.getBoard(),
 				board.getBlocks(), board.getFinalSquare());
-		GPSEngine engine = new GridLockEngine();
-		engine.engine(problem, SearchStrategy.DFS);
+		GPSEngine engine = new GridLockEngine(20);
+		engine.engine(problem, SearchStrategy.IDDFS);
 		long end = System.currentTimeMillis();
-		System.out.println("Fin. Tiempo estimado: " + (end - start) / 1000
-				+ " segundos");
+		System.out.println("Fin. Tiempo estimado: " + (end - start)
+				+ " milisegundos");
 	}
 }

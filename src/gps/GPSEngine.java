@@ -17,35 +17,80 @@ public abstract class GPSEngine {
 
 	private GPSProblem problem;
 
+	private int iddfsDepth = 10;
+
+	private int iddfsIteration = 1;
+
 	// Use this variable in the addNode implementation
 	protected SearchStrategy strategy;
+
+	public GPSEngine() {
+	}
+
+	public GPSEngine(int iddfsDepth) {
+		this.iddfsDepth = iddfsDepth;
+	}
 
 	public boolean engine(GPSProblem myProblem, SearchStrategy myStrategy) {
 
 		problem = myProblem;
 		strategy = myStrategy;
 
-		GPSNode rootNode = new GPSNode(problem.getInitState(), 0);
+		GPSNode rootNode = new GPSNode(problem.getInitState(), 0, 1);
 		boolean finished = false;
 		boolean failed = false;
 		long explosionCounter = 0;
 
 		open.add(rootNode);
-		while (!failed && !finished) {
-			if (open.size() <= 0) {
-				failed = true;
-			} else {
-				GPSNode currentNode = open.get(0);
-				closed.add(currentNode);
-				open.remove(0);
-				if (isGoal(currentNode)) {
-					finished = true;
-					System.out.println(currentNode.getSolution());
-					System.out.println("Expanded nodes: " + explosionCounter);
+		if (strategy != SearchStrategy.IDDFS) {
+			while (!failed && !finished) {
+				if (open.size() <= 0) {
+					failed = true;
 				} else {
-					explosionCounter++;
-					explode(currentNode);
+					GPSNode currentNode = open.get(0);
+					closed.add(currentNode);
+					open.remove(0);
+					if (isGoal(currentNode)) {
+						finished = true;
+						System.out.println(currentNode.getSolution());
+						System.out.println("Expanded nodes: "
+								+ explosionCounter);
+					} else {
+						explosionCounter++;
+						explode(currentNode);
+					}
 				}
+			}
+		} else {
+			// While for each iteration in IDDFS
+			while (!finished && iddfsDepth >= iddfsIteration) {
+				// TODO Open should always be empty at this point. Just in case
+				// I reset the list
+				open = new ArrayList<GPSNode>();
+				closed = new ArrayList<GPSNode>();
+				open.add(rootNode);
+				while (open.size() > 0 && !finished) {
+					GPSNode currentNode = open.get(0);
+					closed.add(currentNode);
+					open.remove(0);
+					if (isGoal(currentNode)) {
+						finished = true;
+						System.out.println(currentNode.getSolution());
+						System.out.println("Expanded nodes: "
+								+ explosionCounter);
+					} else {
+						// Only expand depending on the depth of the current
+						// node
+						if (currentNode.getDepth() < iddfsIteration) {
+							explosionCounter++;
+							explode(currentNode);
+						}
+					}
+				}
+				iddfsIteration++;
+			}
+			if (!finished) {
+				failed = true;
 			}
 		}
 
@@ -73,7 +118,7 @@ public abstract class GPSEngine {
 		}
 
 		for (GPSRule rule : problem.getRules()) {
-//			 System.out.println(rule.getName());
+			// System.out.println(rule.getName());
 			GPSState newState = null;
 			try {
 				newState = rule.evalRule(node.getState());
@@ -85,7 +130,7 @@ public abstract class GPSEngine {
 					&& !checkOpenAndClosed(node.getCost() + rule.getCost(),
 							newState)) {
 				GPSNode newNode = new GPSNode(newState, node.getCost()
-						+ rule.getCost());
+						+ rule.getCost(), node.getDepth() + 1);
 				newNode.setParent(node);
 				addNode(newNode);
 			}
@@ -120,6 +165,14 @@ public abstract class GPSEngine {
 
 	public List<GPSNode> getClosedNodes() {
 		return this.closed;
+	}
+
+	public int getIddfsDepth() {
+		return iddfsDepth;
+	}
+
+	public int getIddfsIteration() {
+		return iddfsIteration;
 	}
 
 }
