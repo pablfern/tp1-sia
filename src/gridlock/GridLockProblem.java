@@ -79,8 +79,8 @@ public class GridLockProblem implements GPSProblem {
 		switch (heuristic) {
 		case DISTANCE_TO_GOAL:
 			return distanceToGoalHeuristic((BoardState) state);
-		case BLOCKS_IN_THE_MIDDEL:
-			return blocksInTheMiddelHeuristic((BoardState) state);
+		case BLOCKS_IN_THE_MIDDLE:
+			return blocksInTheMiddleHeuristic((BoardState) state);
 		default:
 			return 0;
 		}
@@ -105,9 +105,9 @@ public class GridLockProblem implements GPSProblem {
 	/*
 	 * This heuristic uses the amount of blocks between the goal and the main
 	 * block. THIS HEURISTIC DOES NOT CONTEMPLATE THE CASE WHERE THE GOAL AND
-	 * THE MAIN BLOCK ARE PLACED INCORRECTYL.
+	 * THE MAIN BLOCK ARE PLACED INCORRECTLY.
 	 */
-	private Integer blocksInTheMiddelHeuristic(BoardState state) {
+	private Integer blocksInTheMiddleHeuristic(BoardState state) {
 		Block block = state.getBlocks().get(0);
 		Set<Integer> blocks = new HashSet<Integer>();
 		if (block.isHorizontal()) {
@@ -116,14 +116,14 @@ public class GridLockProblem implements GPSProblem {
 					blocks.add(board[block.getHead().getI()][j]);
 				}
 			}
-			return blocks.size();
+			return blocks.size() + 1;
 		} else {
 			for (int i = block.getHead().getI() + 1; i < board.length; i++) {
 				if (board[i][block.getHead().getJ()] != 0) {
 					blocks.add(board[i][block.getHead().getJ()]);
 				}
 			}
-			return blocks.size();
+			return blocks.size() + 1;
 		}
 	}
 

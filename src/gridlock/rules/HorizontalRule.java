@@ -18,7 +18,7 @@ public class HorizontalRule implements GPSRule {
 
 	@Override
 	public Integer getCost() {
-		return 6;
+		return 1;
 	}
 
 	@Override

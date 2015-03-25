@@ -13,15 +13,15 @@ public class GridLock {
 
 	public static void main(String[] args) {
 		
-		Board board = BoardGenerator.getThreeBlockBoard();
+		Board board = BoardGenerator.getSevenBlockBoard();
 		System.out.println("Initial board");
 		Utils.printBoard(board.getBoard());
 		System.out.println();
 		
 		//le pasas por constructor la heuristica en caso de que sea necesario
 		GPSProblem problem = new GridLockProblem(board.getBoard(),
-				board.getBlocks(), board.getFinalSquare(), Heuristic.DISTANCE_TO_GOAL);
-		GPSEngine engine = new GridLockEngine(13);
+				board.getBlocks(), board.getFinalSquare(), Heuristic.BLOCKS_IN_THE_MIDDLE);
+		GPSEngine engine = new GridLockEngine(20);
 		engine.engine(problem, SearchStrategy.GREEDY);
 	}
 }
