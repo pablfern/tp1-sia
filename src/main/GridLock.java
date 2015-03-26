@@ -4,7 +4,6 @@ import gps.GPSEngine;
 import gps.Heuristic;
 import gps.SearchStrategy;
 import gps.api.GPSProblem;
-import gridlock.BoardState;
 import gridlock.GridLockEngine;
 import gridlock.GridLockProblem;
 import boards.Board;
@@ -14,7 +13,7 @@ public class GridLock {
 
 	public static void main(String[] args) {
 		
-		Board board = BoardGenerator.getElevenBlockBoard();
+		Board board = BoardGenerator.getSixBlockBoard();
 		System.out.println("Initial board");
 		Utils.printBoard(board.getBoard());
 		System.out.println();
@@ -22,7 +21,7 @@ public class GridLock {
 		//le pasas por constructor la heuristica en caso de que sea necesario
 		GPSProblem problem = new GridLockProblem(board.getBoard(),
 				board.getBlocks(), board.getFinalSquare(), Heuristic.BLOCKS_TO_MOVE);
-		GPSEngine engine = new GridLockEngine(40);
-		engine.engine(problem, SearchStrategy.GREEDY);
+		GPSEngine engine = new GridLockEngine();
+		engine.engine(problem, SearchStrategy.DFS);
 	}
 }

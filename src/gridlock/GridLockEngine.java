@@ -7,14 +7,6 @@ import javax.management.RuntimeErrorException;
 
 public class GridLockEngine extends GPSEngine {
 
-	public GridLockEngine() {
-		super();
-	}
-
-	public GridLockEngine(int iddfsDepth) {
-		super(iddfsDepth);
-	}
-
 	@Override
 	public void addNode(GPSNode node) {
 	

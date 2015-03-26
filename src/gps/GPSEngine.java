@@ -17,19 +17,9 @@ public abstract class GPSEngine {
 
 	private GPSProblem problem;
 
-	private int iddfsDepth = 10;
-
-	private int iddfsIteration = 1;
-
+	private int repeteadStates = 0;
 	// Use this variable in the addNode implementation
 	protected SearchStrategy strategy;
-
-	public GPSEngine() {
-	}
-
-	public GPSEngine(int iddfsDepth) {
-		this.iddfsDepth = iddfsDepth;
-	}
 
 	public void engine(GPSProblem myProblem, SearchStrategy myStrategy) {
 		long start = System.currentTimeMillis();
@@ -43,7 +33,8 @@ public abstract class GPSEngine {
 		long explosionCounter = 0;
 
 		open.add(rootNode);
-		if (strategy != SearchStrategy.IDDFS && !SearchStrategy.isHeuristic(strategy)) {
+		if (strategy != SearchStrategy.IDDFS
+				&& !SearchStrategy.isHeuristic(strategy)) {
 			while (!failed && !finished) {
 				if (open.size() <= 0) {
 					failed = true;
@@ -59,36 +50,44 @@ public abstract class GPSEngine {
 					}
 				}
 			}
-		} else if(!SearchStrategy.isHeuristic(strategy)) {
+		} else if (!SearchStrategy.isHeuristic(strategy)) {
 			// While for each iteration in IDDFS
-			while (!finished && iddfsDepth >= iddfsIteration) {
-				// TODO Open should always be empty at this point. Just in case
-				// I reset the list
-				open = new ArrayList<GPSNode>();
-				closed = new ArrayList<GPSNode>();
-				open.add(rootNode);
-				while (open.size() > 0 && !finished) {
-					GPSNode currentNode = getCurrentNode();
-					if (isGoal(currentNode)) {
-						finished = true;
-						answerDepth = currentNode.getDepth();
-						System.out.println(currentNode.getSolution(problem));
-					} else {
-						// Only expand depending on the depth of the current
-						// node
-						if (currentNode.getDepth() < iddfsIteration) {
-							explosionCounter++;
-							explode(currentNode);
+			int iddfsIteration = 1;
+			try {
+				while (!finished) {
+					// TODO Open should always be empty at this point. Just in
+					// case
+					// I reset the list
+					open = new ArrayList<GPSNode>();
+					closed = new ArrayList<GPSNode>();
+					open.add(rootNode);
+					while (open.size() > 0 && !finished) {
+						GPSNode currentNode = getCurrentNode();
+						if (isGoal(currentNode)) {
+							finished = true;
+							answerDepth = currentNode.getDepth();
+							System.out
+									.println(currentNode.getSolution(problem));
+						} else {
+							// Only expand depending on the depth of the current
+							// node
+							if (currentNode.getDepth() < iddfsIteration) {
+								explosionCounter++;
+								explode(currentNode);
+							}
 						}
 					}
+					iddfsIteration++;
 				}
-				iddfsIteration++;
+			} catch (OutOfMemoryError e) {
+				finished = false;
+				System.out.println("Out of memory!!");
 			}
 			if (!finished) {
 				failed = true;
 			}
-		} else{
-			//Estrategia con heuristica
+		} else {
+			// Estrategia con heuristica
 			while (!failed && !finished) {
 				if (open.size() <= 0) {
 					failed = true;
@@ -118,8 +117,11 @@ public abstract class GPSEngine {
 			System.out.println("Profundiad de la solución: " + answerDepth);
 		}
 		int nodeCount = open.size() + closed.size();
+		System.out
+				.println("Cantidad de estados únicos generados: " + nodeCount);
+		nodeCount += repeteadStates;
 		System.out.println("Cantidad de estados generados: " + nodeCount);
-		System.out.println("Número de nodos frontera: ??");
+		System.out.println("Número de nodos frontera: " + open.size());
 		System.out.println("Número de nodos expandidos: " + explosionCounter);
 	}
 
@@ -158,6 +160,8 @@ public abstract class GPSEngine {
 						+ rule.getCost(), node.getDepth() + 1);
 				newNode.setParent(node);
 				addNode(newNode);
+			} else if (newState != null) {
+				repeteadStates++;
 			}
 		}
 		return true;
@@ -165,7 +169,8 @@ public abstract class GPSEngine {
 
 	private boolean checkOpenAndClosed(Integer cost, GPSState state) {
 		for (GPSNode openNode : open) {
-			if (openNode.getState().compare(state) && openNode.getCost() <= cost) {
+			if (openNode.getState().compare(state)
+					&& openNode.getCost() <= cost) {
 				return true;
 			}
 		}
@@ -191,25 +196,18 @@ public abstract class GPSEngine {
 	public List<GPSNode> getClosedNodes() {
 		return this.closed;
 	}
-	
+
 	public List<GPSNode> getOpenNodes() {
 		return this.open;
 	}
-	
-	public int getIddfsDepth() {
-		return iddfsDepth;
-	}
 
-	public int getIddfsIteration() {
-		return iddfsIteration;
-	}
-	
 	private boolean explodeHeuristic(GPSNode node) {
 		if (problem.getRules() == null) {
 			System.err.println("No rules!");
 			return false;
 		}
-		List<GPSNode> heuristic = new ArrayList<GPSNode>();;
+		List<GPSNode> heuristic = new ArrayList<GPSNode>();
+		;
 
 		for (GPSRule rule : problem.getRules()) {
 			// System.out.println(rule.getName());
@@ -227,10 +225,12 @@ public abstract class GPSEngine {
 						+ rule.getCost(), node.getDepth() + 1);
 				newNode.setParent(node);
 				heuristic = strategy.addNode(heuristic, newNode, problem);
+			} else if (newState != null) {
+				repeteadStates++;
 			}
 		}
-		if(!heuristic.isEmpty()){
-			for(GPSNode hNode: heuristic){
+		if (!heuristic.isEmpty()) {
+			for (GPSNode hNode : heuristic) {
 				addNode(hNode);
 			}
 		}
