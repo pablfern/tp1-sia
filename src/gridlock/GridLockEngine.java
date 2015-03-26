@@ -17,10 +17,7 @@ public class GridLockEngine extends GPSEngine {
 
 	@Override
 	public void addNode(GPSNode node) {
-		/* Check for duplicate nodes */
-		if (isDuplicateNode(node))
-			return;
-
+	
 		switch (strategy) {
 		case BFS:
 			open.add(node);
@@ -37,15 +34,6 @@ public class GridLockEngine extends GPSEngine {
 		default:
 			throw new RuntimeErrorException(null);
 		}
-	}
-
-	private boolean isDuplicateNode(GPSNode node) {
-		for (GPSNode n : getClosedNodes()) {
-			if (n.getState().compare(node.getState())) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }

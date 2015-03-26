@@ -1,5 +1,6 @@
 package gps;
 
+import gps.api.GPSProblem;
 import gps.api.GPSState;
 
 public class GPSNode {
@@ -40,11 +41,13 @@ public class GPSNode {
 		return state.toString();
 	}
 
-	public String getSolution() {
+	public String getSolution(GPSProblem problem) {
 		if (this.parent == null) {
-			return this.state.toString();
+			return "HVALUE " + problem.getHValue(this.state) + "\n"
+					+ this.state.toString();
 		}
-		return this.parent.getSolution() + "\n" + this.state;
+		return this.parent.getSolution(problem) + "\n" + "HVALUE "
+				+ problem.getHValue(this.state) + "\n" + this.state;
 	}
 
 	public int getDepth() {

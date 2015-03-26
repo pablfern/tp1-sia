@@ -52,7 +52,7 @@ public abstract class GPSEngine {
 					if (isGoal(currentNode)) {
 						finished = true;
 						answerDepth = currentNode.getDepth();
-						System.out.println(currentNode.getSolution());
+						System.out.println(currentNode.getSolution(problem));
 					} else {
 						explosionCounter++;
 						explode(currentNode);
@@ -72,7 +72,7 @@ public abstract class GPSEngine {
 					if (isGoal(currentNode)) {
 						finished = true;
 						answerDepth = currentNode.getDepth();
-						System.out.println(currentNode.getSolution());
+						System.out.println(currentNode.getSolution(problem));
 					} else {
 						// Only expand depending on the depth of the current
 						// node
@@ -97,7 +97,7 @@ public abstract class GPSEngine {
 					if (isGoal(currentNode)) {
 						finished = true;
 						answerDepth = currentNode.getDepth();
-						System.out.println(currentNode.getSolution());
+						System.out.println(currentNode.getSolution(problem));
 					} else {
 						explosionCounter++;
 						explodeHeuristic(currentNode);
@@ -165,13 +165,13 @@ public abstract class GPSEngine {
 
 	private boolean checkOpenAndClosed(Integer cost, GPSState state) {
 		for (GPSNode openNode : open) {
-			if (openNode.getState().compare(state) && openNode.getCost() < cost) {
+			if (openNode.getState().compare(state) && openNode.getCost() <= cost) {
 				return true;
 			}
 		}
 		for (GPSNode closedNode : closed) {
 			if (closedNode.getState().compare(state)
-					&& closedNode.getCost() < cost) {
+					&& closedNode.getCost() <= cost) {
 				return true;
 			}
 		}
@@ -191,7 +191,11 @@ public abstract class GPSEngine {
 	public List<GPSNode> getClosedNodes() {
 		return this.closed;
 	}
-
+	
+	public List<GPSNode> getOpenNodes() {
+		return this.open;
+	}
+	
 	public int getIddfsDepth() {
 		return iddfsDepth;
 	}

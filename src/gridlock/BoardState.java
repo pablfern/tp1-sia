@@ -4,7 +4,9 @@ import exception.NotAppliableException;
 import gps.api.GPSState;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import main.Utils;
 
@@ -151,6 +153,41 @@ public class BoardState implements GPSState {
 		return blocks;
 	}
 
+	public Set<Integer> blockingBlocks(int id) {
+		Block b = blocks.get(id - 1);
+		Set<Integer> blocking = new HashSet<Integer>();
+
+		Square head = b.getHead();
+		Square tail = b.getTail();
+		int count = tail.getI();
+		for (int i = head.getI() + 1; i < board.length; i++) {
+			int pos = board[i][head.getJ()];
+			if (pos == 0) {
+				count++;
+			} else {
+				if (count <= blocks.get(0).getHead().getI()) {
+					blocking.add(pos);
+				}
+				break;
+			}
+		}
+
+		count = head.getI();
+		for (int i = tail.getI() - 1; i >= 0; i--) {
+			int pos = board[i][tail.getJ()];
+			if (pos == 0) {
+				count--;
+			} else {
+				if (count >= blocks.get(0).getHead().getI()) {
+					blocking.add(pos);
+				}
+				break;
+			}
+		}
+
+		return blocking;
+	}
+
 	public void updateBoard(int[][] board, Block block, int id) {
 		if (block.isHorizontal()) {
 			for (int j = 0; j < block.getSize(); j++) {
@@ -177,6 +214,10 @@ public class BoardState implements GPSState {
 	@Override
 	public String toString() {
 		return "BoardState:\n".concat(Utils.boardToString(board));
+	}
+
+	public int[][] getBoard() {
+		return board;
 	}
 
 }

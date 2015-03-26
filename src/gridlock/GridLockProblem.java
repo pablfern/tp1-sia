@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import main.Utils;
+
 public class GridLockProblem implements GPSProblem {
 
 	private Square finalSquare;
@@ -72,15 +74,22 @@ public class GridLockProblem implements GPSProblem {
 
 	@Override
 	public Integer getHValue(GPSState state) {
-		
+
 		if (heuristic == null) {
 			return 0;
 		}
+				
 		switch (heuristic) {
-		case DISTANCE_TO_GOAL:
-			return distanceToGoalHeuristic((BoardState) state);
-		case BLOCKS_IN_THE_MIDDLE:
-			return blocksInTheMiddleHeuristic((BoardState) state);
+		case BLOCKS_TO_MOVE_ENH:
+			int hValue = blocksToMoveEnhancedHeuristic((BoardState) state);
+			//System.out.println("HValue: " + hValue);
+			//System.out.println(state.toString());
+			return hValue;
+		case BLOCKS_TO_MOVE:
+			System.out.println(state.toString());
+			int hValue2 = blocksToMoveHeuristic((BoardState) state);
+			System.out.println("HValue: " + hValue2);
+			return hValue2;
 		default:
 			return 0;
 		}
@@ -93,13 +102,28 @@ public class GridLockProblem implements GPSProblem {
 	 * head of the block to the goal. THIS HEURISTIC DOES NOT CONTEMPLATE THE
 	 * CASE WHERE THE GOAL AND THE MAIN BLOCK ARE PLACED INCORRECTYL.
 	 */
-	private Integer distanceToGoalHeuristic(BoardState state) {
-		Block block = state.getBlocks().get(0);
-		if (block.isHorizontal()) {
-			return finalSquare.getJ() - block.getHead().getJ();
-		} else {
-			return finalSquare.getI() - block.getHead().getI();
+	private Integer blocksToMoveEnhancedHeuristic(BoardState state) {
+		
+		if(isGoalState(state)){
+			return 0;
 		}
+		
+		Block block = state.getBlocks().get(0);
+		Set<Integer> blocks = new HashSet<Integer>();
+		Set<Integer> blocking = new HashSet<Integer>();
+		
+		for (int j = block.getHead().getJ() + 1; j < board[0].length; j++) {
+			if (state.getBoard()[block.getHead().getI()][j] != 0) {
+				int id = state.getBoard()[block.getHead().getI()][j];
+				blocks.add(id);
+				blocking.addAll(state.blockingBlocks(id));
+			}
+		}
+		
+		blocks.addAll(blocking);
+		
+		return blocks.size() + 1;
+			
 	}
 
 	/*
@@ -107,24 +131,21 @@ public class GridLockProblem implements GPSProblem {
 	 * block. THIS HEURISTIC DOES NOT CONTEMPLATE THE CASE WHERE THE GOAL AND
 	 * THE MAIN BLOCK ARE PLACED INCORRECTLY.
 	 */
-	private Integer blocksInTheMiddleHeuristic(BoardState state) {
+	private Integer blocksToMoveHeuristic(BoardState state) {
 		Block block = state.getBlocks().get(0);
 		Set<Integer> blocks = new HashSet<Integer>();
-		if (block.isHorizontal()) {
-			for (int j = block.getHead().getJ() + 1; j < board[0].length; j++) {
-				if (board[block.getHead().getI()][j] != 0) {
-					blocks.add(board[block.getHead().getI()][j]);
-				}
-			}
-			return blocks.size() + 1;
-		} else {
-			for (int i = block.getHead().getI() + 1; i < board.length; i++) {
-				if (board[i][block.getHead().getJ()] != 0) {
-					blocks.add(board[i][block.getHead().getJ()]);
-				}
-			}
-			return blocks.size() + 1;
+		
+		if(isGoalState(state)){
+			return 0;
 		}
-	}
 
+		for (int j = block.getHead().getJ() + 1; j < board[0].length; j++) {
+			if (state.getBoard()[block.getHead().getI()][j] != 0) {
+				blocks.add(state.getBoard()[block.getHead().getI()][j]);
+			}
+		}
+
+		return blocks.size() + 1;
+
+	}
 }
