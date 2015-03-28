@@ -229,9 +229,9 @@ public abstract class GPSEngine {
 			}
 		}
 		if (!heuristic.isEmpty()) {
-//			if(strategy.isAstar()){
-//				open = new LinkedList<GPSNode>();
-//			}
+			if(strategy.isAstar()){
+				open = new LinkedList<GPSNode>();
+			}
 			for (GPSNode hNode : heuristic) {
 				addNode(hNode);
 			}

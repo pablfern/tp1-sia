@@ -13,7 +13,7 @@ public class GridLock {
 
 	public static void main(String[] args) {
 		
-		Board board = BoardGenerator.getSixBlockBoard();
+		Board board = BoardGenerator.getElevenBlockBoard();
 		System.out.println("Initial board");
 		Utils.printBoard(board.getBoard());
 		System.out.println();

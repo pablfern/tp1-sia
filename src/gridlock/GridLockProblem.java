@@ -12,8 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import main.Utils;
-
 public class GridLockProblem implements GPSProblem {
 
 	private Square finalSquare;
@@ -86,9 +84,9 @@ public class GridLockProblem implements GPSProblem {
 			//System.out.println(state.toString());
 			return hValue;
 		case BLOCKS_TO_MOVE:
-			System.out.println(state.toString());
+//			System.out.println(state.toString());
 			int hValue2 = blocksToMoveHeuristic((BoardState) state);
-			System.out.println("HValue: " + hValue2);
+//			System.out.println("HValue: " + hValue2);
 			return hValue2;
 		default:
 			return 0;
