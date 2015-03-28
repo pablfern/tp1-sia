@@ -171,6 +171,11 @@ public class BoardState implements GPSState {
 				break;
 			}
 		}
+		
+		/* If there is enough space to move the block return empty */
+		if (count > blocks.get(0).getHead().getI()) {
+			return new HashSet<Integer>();
+		}
 
 		count = head.getI();
 		for (int i = tail.getI() - 1; i >= 0; i--) {
@@ -184,7 +189,12 @@ public class BoardState implements GPSState {
 				break;
 			}
 		}
-
+		
+		/* If there is enough space to move the block return empty */
+		if (count < blocks.get(0).getHead().getI()) {
+			return new HashSet<Integer>();
+		}
+		
 		return blocking;
 	}
 

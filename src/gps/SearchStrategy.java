@@ -7,18 +7,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import main.Utils;
-
 public enum SearchStrategy {
 	BFS,
 	DFS,
 	IDDFS,
 	GREEDY,
-	AStar;
+	ASTAR;
 
 	public static boolean isHeuristic(SearchStrategy strategy) {
 		switch(strategy){
-		case GREEDY : case AStar:
+		case GREEDY : case ASTAR:
 			return true;
 		default:
 			return false;
@@ -53,7 +51,7 @@ public enum SearchStrategy {
 		if(this.equals(GREEDY)){
 			newNodevalueH = getHeuristic(problem, newNode);
 			hnodevalueH =  getHeuristic(problem, hnode);
-		}else if(this.equals(AStar)){
+		}else if(this.equals(ASTAR)){
 			newNodevalueH = getCostAstar(newNode, problem);
 			hnodevalueH = getCostAstar(hnode, problem);
 			if(newNodevalueH.equals(hnodevalueH)){
@@ -80,7 +78,7 @@ public enum SearchStrategy {
 	public List<GPSNode> getNodeList(List<GPSNode> open, GPSProblem problem) {
 		if(this.equals(GREEDY)){
 			return new ArrayList<GPSNode>();
-		}else if(this.equals(AStar)){
+		}else if(this.equals(ASTAR)){
 			return order(open, problem);
 		}
 		return null;
@@ -107,7 +105,7 @@ public enum SearchStrategy {
 	}
 
 	public boolean isAstar() {
-		return this.equals(AStar);
+		return this.equals(ASTAR);
 	}
 	
 

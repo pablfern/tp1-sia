@@ -137,6 +137,47 @@ public class BoardGenerator {
 		return new Board(board, blocks, finalSquare);
 	}
 	
+	public static Board getAnotherSixBlockBoard(){
+		int[][] board = new int[6][6];
+
+		board[3][1] = 1;
+		board[3][0] = 1;
+		
+		board[2][2] = 2;
+		board[3][2] = 2;
+		
+		board[2][3] = 3;
+		board[3][3] = 3;
+		
+		board[1][1] = 4;
+		board[1][2] = 4;
+		
+		board[1][3] = 5;
+		board[1][4] = 5;
+		
+		board[4][2] = 6;
+		board[4][3] = 6;
+		
+		List<Block> blocks = new ArrayList<Block>();
+		
+		Block b1 = new Block(1, new Square(3,1), new Square(3, 0), true, 2);
+		Block b2 = new Block(2, new Square(3,2), new Square(2, 2), false, 2);
+		Block b3 = new Block(3, new Square(3,3), new Square(2, 3), false, 2);
+		Block b4 = new Block(4, new Square(1,2), new Square(1, 1), true, 2);
+		Block b5 = new Block(5, new Square(1,4), new Square(1, 3), true, 2);
+		Block b6 = new Block(5, new Square(4,3), new Square(4, 2), true, 2);
+			
+		blocks.add(b1);
+		blocks.add(b2);
+		blocks.add(b3);
+		blocks.add(b4);
+		blocks.add(b5);
+		blocks.add(b6);
+		
+		Square finalSquare = new Square(3, 5);
+		return new Board(board, blocks, finalSquare);
+	}
+	
 	public static Board getSevenBlockBoard() {
 		int[][] board = new int[6][6];
 
