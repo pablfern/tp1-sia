@@ -45,7 +45,7 @@ public class Utils {
 	}
 
 	public static void printAstarNodeList(List<GPSNode> aux, GPSProblem problem) {
-		String ans = "OrderListOpenAStar: ";
+		String ans = "OrderHeuristicListOpenAStar: ";
 		for(GPSNode node: aux){
 			Integer value = node.getCost() + problem.getHValue(node.getState());
 			ans += value.toString() + "|";

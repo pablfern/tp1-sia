@@ -96,13 +96,17 @@ public enum SearchStrategy {
 	        {
 	        	Integer node1value = getCostAstar(node1,problem);
 	        	Integer node2value = getCostAstar(node2, problem);
-	            return  getCostAstar(node1,problem).compareTo(getCostAstar(node2,problem));
+	            return  getCostAstar(node2,problem).compareTo(getCostAstar(node1,problem));
 	        }
 	    });
 		
 		Utils.printAstarNodeList(aux,problem);
-
 		return aux;
+	}
+
+	public boolean isAstar() {
+		// TODO Auto-generated method stub
+		return this.equals(AStar);
 	}
 	
 
