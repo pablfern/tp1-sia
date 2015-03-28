@@ -56,9 +56,11 @@ public enum SearchStrategy {
 		}else if(this.equals(AStar)){
 			newNodevalueH = getCostAstar(newNode, problem);
 			hnodevalueH = getCostAstar(hnode, problem);
-			//TODO no estoy teniendo en cuenta que si son iguales
-			// en ese caso no se si hay que tener en cta el de menor cost o 
-			// el de menor h
+			if(newNodevalueH.equals(hnodevalueH)){
+				newNodevalueH = getHeuristic(problem, newNode);
+				hnodevalueH =  getHeuristic(problem, hnode);
+			}
+
 		}
 		return hasWorstHeuristic(newNodevalueH, hnodevalueH);
 	}
@@ -85,10 +87,6 @@ public enum SearchStrategy {
 	}
 
 	private List<GPSNode> order(List<GPSNode> open, final GPSProblem problem) {
-		// TODO Puede que este metodo este de mas, se supone que voy ordenando 
-		//en strategy.addNode cuando agrego. 
-		//El tema es: los valores de open van cambiando? es necesario ordenarlos
-		//de nuevo?
 		List<GPSNode> aux = open;
 		Collections.sort(aux, new Comparator<GPSNode>() {
 	        @Override
@@ -96,7 +94,11 @@ public enum SearchStrategy {
 	        {
 	        	Integer node1value = getCostAstar(node1,problem);
 	        	Integer node2value = getCostAstar(node2, problem);
-	            return  getCostAstar(node2,problem).compareTo(getCostAstar(node1,problem));
+				if(node1value.equals(node2value)){
+					node1value = getHeuristic(problem, node1);
+					node2value =  getHeuristic(problem, node2);
+				}
+	            return  node2value.compareTo(node1value);
 	        }
 	    });
 		
@@ -105,7 +107,6 @@ public enum SearchStrategy {
 	}
 
 	public boolean isAstar() {
-		// TODO Auto-generated method stub
 		return this.equals(AStar);
 	}
 	
