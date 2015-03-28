@@ -206,8 +206,7 @@ public abstract class GPSEngine {
 			System.err.println("No rules!");
 			return false;
 		}
-		List<GPSNode> heuristic = new ArrayList<GPSNode>();
-		;
+		List<GPSNode> heuristic = strategy.getNodeList(open, problem);
 
 		for (GPSRule rule : problem.getRules()) {
 			// System.out.println(rule.getName());

@@ -3,7 +3,11 @@ package gps;
 import gps.api.GPSProblem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import main.Utils;
 
 public enum SearchStrategy {
 	BFS,
@@ -69,6 +73,36 @@ public enum SearchStrategy {
 	
 	private Integer getCostAstar(GPSNode node, GPSProblem problem){
 		return node.getCost() + getHeuristic(problem, node);
+	}
+
+	public List<GPSNode> getNodeList(List<GPSNode> open, GPSProblem problem) {
+		if(this.equals(GREEDY)){
+			return new ArrayList<GPSNode>();
+		}else if(this.equals(AStar)){
+			return order(open, problem);
+		}
+		return null;
+	}
+
+	private List<GPSNode> order(List<GPSNode> open, final GPSProblem problem) {
+		// TODO Puede que este metodo este de mas, se supone que voy ordenando 
+		//en strategy.addNode cuando agrego. 
+		//El tema es: los valores de open van cambiando? es necesario ordenarlos
+		//de nuevo?
+		List<GPSNode> aux = open;
+		Collections.sort(aux, new Comparator<GPSNode>() {
+	        @Override
+	        public int compare(GPSNode  node1, GPSNode  node2)
+	        {
+	        	Integer node1value = getCostAstar(node1,problem);
+	        	Integer node2value = getCostAstar(node2, problem);
+	            return  getCostAstar(node1,problem).compareTo(getCostAstar(node2,problem));
+	        }
+	    });
+		
+		Utils.printAstarNodeList(aux,problem);
+
+		return aux;
 	}
 	
 
