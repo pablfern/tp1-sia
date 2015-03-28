@@ -114,7 +114,21 @@ public class GridLockProblem implements GPSProblem {
 			if (state.getBoard()[block.getHead().getI()][j] != 0) {
 				int id = state.getBoard()[block.getHead().getI()][j];
 				blocks.add(id);
-				blocking.addAll(state.blockingBlocks(id));
+				Set<Integer> aux = state.blockingBlocks(id);
+				boolean addSet = true;
+				/*
+				 * This code avoids overestimating number of blocks to move.
+				 * It was the case showed in the Eleven block board
+				 */
+				for(Integer i: aux){
+					if(blocking.contains(i)){
+						addSet = false;
+						break;
+					}
+				}
+				if(addSet){
+					blocking.addAll(aux);
+				}
 			}
 		}
 		
