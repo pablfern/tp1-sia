@@ -60,6 +60,7 @@ public abstract class GPSEngine {
 					// I reset the list
 					open = new ArrayList<GPSNode>();
 					closed = new ArrayList<GPSNode>();
+					repeteadStates = 0;
 					open.add(rootNode);
 					while (open.size() > 0 && !finished) {
 						GPSNode currentNode = getCurrentNode();
