@@ -102,7 +102,7 @@ public enum SearchStrategy {
 	        }
 	    });
 		
-		Utils.printAstarNodeList(aux,problem);
+//		Utils.printAstarNodeList(aux,problem);
 		return aux;
 	}
 
