@@ -20,7 +20,7 @@ public class GridLockEngine extends GPSEngine {
 		case IDDFS:
 			open.add(0,node);
 			break;
-		case GREEDY: case AStar:
+		case GREEDY: case ASTAR:
 			open.add(0,node);
 			break;
 		default:

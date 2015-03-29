@@ -1,5 +1,9 @@
 package main;
 
+import java.util.List;
+
+import gps.GPSNode;
+import gps.api.GPSProblem;
 import gridlock.Block;
 
 public class Utils {
@@ -38,5 +42,15 @@ public class Utils {
 		}
 		ans = ans.concat("\n");
 		return ans;
+	}
+
+	public static void printAstarNodeList(List<GPSNode> aux, GPSProblem problem) {
+		String ans = "OrderHeuristicListOpenAStar: ";
+		for(GPSNode node: aux){
+			Integer value = node.getCost() + problem.getHValue(node.getState());
+			ans += value.toString() + "|";
+		}
+		System.out.println(ans);
+		
 	}
 }

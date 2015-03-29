@@ -13,6 +13,7 @@ public class GridLock {
 
 	public static void main(String[] args) {
 		
+
 		Board board = BoardGenerator.getTwelveBlockBoard();
 		System.out.println("Initial board");
 		Utils.printBoard(board.getBoard());
@@ -22,6 +23,7 @@ public class GridLock {
 		GPSProblem problem = new GridLockProblem(board.getBoard(),
 				board.getBlocks(), board.getFinalSquare(), Heuristic.BLOCKS_TO_MOVE);
 		GPSEngine engine = new GridLockEngine();
-		engine.engine(problem, SearchStrategy.IDDFS);
+		engine.engine(problem, SearchStrategy.ASTAR);
+
 	}
 }

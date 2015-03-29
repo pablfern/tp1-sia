@@ -8,11 +8,14 @@ import gridlock.rules.HorizontalRule;
 import gridlock.rules.VerticalRule;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
-
-import main.Utils;
 
 public class GridLockProblem implements GPSProblem {
 
@@ -78,17 +81,17 @@ public class GridLockProblem implements GPSProblem {
 		if (heuristic == null) {
 			return 0;
 		}
-				
+
 		switch (heuristic) {
 		case BLOCKS_TO_MOVE_ENH:
 			int hValue = blocksToMoveEnhancedHeuristic((BoardState) state);
-			//System.out.println("HValue: " + hValue);
-			//System.out.println(state.toString());
+			// System.out.println("HValue: " + hValue);
+			// System.out.println(state.toString());
 			return hValue;
 		case BLOCKS_TO_MOVE:
-			System.out.println(state.toString());
+			// System.out.println(state.toString());
 			int hValue2 = blocksToMoveHeuristic((BoardState) state);
-			System.out.println("HValue: " + hValue2);
+			// System.out.println("HValue: " + hValue2);
 			return hValue2;
 		default:
 			return 0;
@@ -103,27 +106,89 @@ public class GridLockProblem implements GPSProblem {
 	 * CASE WHERE THE GOAL AND THE MAIN BLOCK ARE PLACED INCORRECTYL.
 	 */
 	private Integer blocksToMoveEnhancedHeuristic(BoardState state) {
-		
-		if(isGoalState(state)){
+
+		if (isGoalState(state)) {
 			return 0;
 		}
-		
+
 		Block block = state.getBlocks().get(0);
 		Set<Integer> blocks = new HashSet<Integer>();
-		Set<Integer> blocking = new HashSet<Integer>();
-		
+
+		/* Set of blocks that obstruct a certain block */
+		Map<Integer, Set<Integer>> map = new HashMap<Integer, Set<Integer>>();
+
+		/* Amount of obstructions produced by a certain block */
+		List<TopObstruction> obstructionsCount = new ArrayList<TopObstruction>();
+
 		for (int j = block.getHead().getJ() + 1; j < board[0].length; j++) {
 			if (state.getBoard()[block.getHead().getI()][j] != 0) {
 				int id = state.getBoard()[block.getHead().getI()][j];
 				blocks.add(id);
-				blocking.addAll(state.blockingBlocks(id));
+				Set<Integer> blockingBlocks = state.blockingBlocks(id);
+				Set<Integer> ignore = new HashSet<Integer>();
+
+				if (!blockingBlocks.isEmpty()) {
+					map.put(id, blockingBlocks);
+				}
+
+				for (TopObstruction t : obstructionsCount) {
+					if (blockingBlocks.contains(t.id)) {
+						t.increaseCount();
+					}
+					ignore.add(t.id);
+				}
+
+				for (Integer i : blockingBlocks) {
+					if (!ignore.contains(i)) {
+						obstructionsCount.add(new TopObstruction(i));
+					}
+				}
 			}
 		}
-		
-		blocks.addAll(blocking);
-		
+
+		Collections.sort(obstructionsCount);
+
+		while (!map.isEmpty() && !obstructionsCount.isEmpty()) {
+			TopObstruction t = obstructionsCount.remove(0);
+
+			Iterator<Map.Entry<Integer, Set<Integer>>> iterator = map
+					.entrySet().iterator();
+			while (iterator.hasNext()) {
+				Entry<Integer, Set<Integer>> next = iterator.next();
+				if (next.getValue().contains(t.id)) {
+					iterator.remove();
+					blocks.add(t.id);
+				}
+			}
+		}
+
 		return blocks.size() + 1;
-			
+
+	}
+
+	private class TopObstruction implements Comparable<TopObstruction> {
+		private int id;
+		private int count;
+
+		public TopObstruction(int id) {
+			this.id = id;
+			this.count = 1;
+		}
+
+		public void increaseCount() {
+			count++;
+		}
+
+		@Override
+		public int compareTo(TopObstruction o) {
+			return o.count - count;
+		}
+
+		@Override
+		public String toString() {
+			return "TopBlocking [id=" + id + ", count=" + count + "]";
+		}
+
 	}
 
 	/*
@@ -134,8 +199,8 @@ public class GridLockProblem implements GPSProblem {
 	private Integer blocksToMoveHeuristic(BoardState state) {
 		Block block = state.getBlocks().get(0);
 		Set<Integer> blocks = new HashSet<Integer>();
-		
-		if(isGoalState(state)){
+
+		if (isGoalState(state)) {
 			return 0;
 		}
 

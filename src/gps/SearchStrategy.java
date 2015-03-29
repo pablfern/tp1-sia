@@ -3,6 +3,8 @@ package gps;
 import gps.api.GPSProblem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public enum SearchStrategy {
@@ -10,11 +12,11 @@ public enum SearchStrategy {
 	DFS,
 	IDDFS,
 	GREEDY,
-	AStar;
+	ASTAR;
 
 	public static boolean isHeuristic(SearchStrategy strategy) {
 		switch(strategy){
-		case GREEDY : case AStar:
+		case GREEDY : case ASTAR:
 			return true;
 		default:
 			return false;
@@ -49,12 +51,14 @@ public enum SearchStrategy {
 		if(this.equals(GREEDY)){
 			newNodevalueH = getHeuristic(problem, newNode);
 			hnodevalueH =  getHeuristic(problem, hnode);
-		}else if(this.equals(AStar)){
+		}else if(this.equals(ASTAR)){
 			newNodevalueH = getCostAstar(newNode, problem);
 			hnodevalueH = getCostAstar(hnode, problem);
-			//TODO no estoy teniendo en cuenta que si son iguales
-			// en ese caso no se si hay que tener en cta el de menor cost o 
-			// el de menor h
+			if(newNodevalueH.equals(hnodevalueH)){
+				newNodevalueH = getHeuristic(problem, newNode);
+				hnodevalueH =  getHeuristic(problem, hnode);
+			}
+
 		}
 		return hasWorstHeuristic(newNodevalueH, hnodevalueH);
 	}
@@ -69,6 +73,39 @@ public enum SearchStrategy {
 	
 	private Integer getCostAstar(GPSNode node, GPSProblem problem){
 		return node.getCost() + getHeuristic(problem, node);
+	}
+
+	public List<GPSNode> getNodeList(List<GPSNode> open, GPSProblem problem) {
+		if(this.equals(GREEDY)){
+			return new ArrayList<GPSNode>();
+		}else if(this.equals(ASTAR)){
+			return order(open, problem);
+		}
+		return null;
+	}
+
+	private List<GPSNode> order(List<GPSNode> open, final GPSProblem problem) {
+		List<GPSNode> aux = open;
+		Collections.sort(aux, new Comparator<GPSNode>() {
+	        @Override
+	        public int compare(GPSNode  node1, GPSNode  node2)
+	        {
+	        	Integer node1value = getCostAstar(node1,problem);
+	        	Integer node2value = getCostAstar(node2, problem);
+				if(node1value.equals(node2value)){
+					node1value = getHeuristic(problem, node1);
+					node2value =  getHeuristic(problem, node2);
+				}
+	            return  node2value.compareTo(node1value);
+	        }
+	    });
+		
+//		Utils.printAstarNodeList(aux,problem);
+		return aux;
+	}
+
+	public boolean isAstar() {
+		return this.equals(ASTAR);
 	}
 	
 

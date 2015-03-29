@@ -60,6 +60,7 @@ public abstract class GPSEngine {
 					// I reset the list
 					open = new ArrayList<GPSNode>();
 					closed = new ArrayList<GPSNode>();
+					repeteadStates = 0;
 					open.add(rootNode);
 					while (open.size() > 0 && !finished) {
 						GPSNode currentNode = getCurrentNode();
@@ -206,8 +207,7 @@ public abstract class GPSEngine {
 			System.err.println("No rules!");
 			return false;
 		}
-		List<GPSNode> heuristic = new ArrayList<GPSNode>();
-		;
+		List<GPSNode> heuristic = strategy.getNodeList(open, problem);
 
 		for (GPSRule rule : problem.getRules()) {
 			// System.out.println(rule.getName());
@@ -230,6 +230,9 @@ public abstract class GPSEngine {
 			}
 		}
 		if (!heuristic.isEmpty()) {
+			if(strategy.isAstar()){
+				open = new LinkedList<GPSNode>();
+			}
 			for (GPSNode hNode : heuristic) {
 				addNode(hNode);
 			}
