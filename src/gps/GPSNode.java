@@ -43,11 +43,9 @@ public class GPSNode {
 
 	public String getSolution(GPSProblem problem) {
 		if (this.parent == null) {
-			return "HVALUE " + problem.getHValue(this.state) + "\n"
-					+ this.state.toString();
+			return this.state.toString();
 		}
-		return this.parent.getSolution(problem) + "\n" + "HVALUE "
-				+ problem.getHValue(this.state) + "\n" + this.state;
+		return this.parent.getSolution(problem) + "\n" + this.state;
 	}
 
 	public int getDepth() {

@@ -107,23 +107,23 @@ public abstract class GPSEngine {
 		}
 
 		if (finished) {
-			System.out.println("OK! solution found!");
+			System.out.println("OK! Solution found!");
 		} else if (failed) {
-			System.err.println("FAILED! solution not found!");
+			System.err.println("FAILED! Solution not found!");
 		}
 		long end = System.currentTimeMillis();
-		System.out.println("Tiempo de procesamiento: " + (end - start)
-				+ " milisegundos");
+		System.out.println("Processing time: " + (end - start)
+				+ " miliseconds");
 		if (answerDepth != -1) {
-			System.out.println("Profundiad de la solución: " + answerDepth);
+			System.out.println("Depth of solution: " + answerDepth);
 		}
 		int nodeCount = open.size() + closed.size();
 		System.out
-				.println("Cantidad de estados únicos generados: " + nodeCount);
+				.println("Number of unique states generated: " + nodeCount);
 		nodeCount += repeteadStates;
-		System.out.println("Cantidad de estados generados: " + nodeCount);
-		System.out.println("Número de nodos frontera: " + open.size());
-		System.out.println("Número de nodos expandidos: " + explosionCounter);
+		System.out.println("Number of states generated: " + nodeCount);
+		System.out.println("Number of frontier nodes: " + open.size());
+		System.out.println("Number of expanded nodes: " + explosionCounter);
 	}
 
 	private GPSNode getCurrentNode() {
@@ -146,7 +146,6 @@ public abstract class GPSEngine {
 		}
 
 		for (GPSRule rule : problem.getRules()) {
-			// System.out.println(rule.getName());
 			GPSState newState = null;
 			try {
 				newState = rule.evalRule(node.getState());

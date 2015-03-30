@@ -223,7 +223,7 @@ public class BoardState implements GPSState {
 
 	@Override
 	public String toString() {
-		return "BoardState:\n".concat(Utils.boardToString(board));
+		return "Board State:\n".concat(Utils.boardToString(board));
 	}
 
 	public int[][] getBoard() {
